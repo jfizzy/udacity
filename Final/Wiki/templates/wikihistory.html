@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+  <h1><b>{{title}}</b></h1>
+  <div class="table">
+    <table><tbody>
+    {% if pages %}
+      {% for p in pages %}
+        <tr>
+          <td class="created" style="float: left; padding:0 15px 0 15px">{{p.created}}</td>
+          <td class="html" style="float: right; padding:0 15px 0 15px; font-family: monospace; width: 450px">{{p.html}}</td>
+          <td><a class="view-page" href="{{''.join([p.url, ''.join(['?v=', loop.index|string])])}}"><b>view</b></a>
+          {% if logged_in %}
+            &nbsp;|
+            <a class="edit-page" href="{{ ''.join(['/_edit', ''.join([p.url, ''.join(['?v=', loop.index|string])])]) }}"><b>edit</b></a></td>
+          {% endif %}
+        </tr>
+        <br>
+        <br>
+      {% endfor %}
+    {% endif %}
+    </tbody></table>
+  </div>
+</form>
+{% endblock %}

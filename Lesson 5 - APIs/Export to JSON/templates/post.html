@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+      <div class="post">
+        <div class="subject" style="float: left">{{post.title}}</div>
+        <div class="created" style="float: right">{{post.created}}</div>
+        <br>
+        <br>
+        <pre class="content" width="800px">{{post.body}}</pre>
+      </div>
+{% endblock %}

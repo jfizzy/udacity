@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form method="post">
+  {% if editing %}
+    <textarea name="html">{{html|safe}}</textarea>
+    <div class="error">{{error}}</div>
+    <input type="submit" value="Save">
+  {% else %}
+    <pre class="html">{{html|safe}}</pre>
+  {% endif %}
+</form>
+{% endblock %}

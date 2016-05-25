@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html>
+  <style>
+    body {
+      position: relative;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 14px;
+
+      margin: 0 auto;
+      padding: 10px;
+      color: #333;
+    }
+
+    .buttons {
+        font-size: 13px;
+        color: gray;
+        position: absolute;
+        padding: 2px;
+        border: 2px solid;
+        border-bottom-width: 5px;
+        border-color: gray;
+        top: 10px;
+        right: 10px;
+    }
+
+    .home-link {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .home-link:visited {
+        color: gray;
+    }
+
+    .home-link:hover {
+        text-decoration: underline;
+    }
+
+    .login-link {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .login-link:visited {
+        color: gray;
+    }
+
+    .login-link:hover {
+        text-decoration: underline;
+    }
+
+    .history-link {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .history-link:visited {
+        color: gray;
+    }
+
+    .history-link:hover {
+        text-decoration: underline;
+    }
+
+    .signup-link {
+        float: right;
+        color: gray;
+        text-decoration: none;
+    }
+
+    .signup-link:visited {
+        color: gray;
+    }
+
+    .signup-link:hover {
+        text-decoration: underline;
+    }
+
+    .error {
+      color: red
+    }
+
+    .edit-link {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .edit-link:visited {
+        color: gray;
+    }
+
+    .edit-link:hover {
+        text-decoration: underline;
+    }
+
+    .edit-page {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .edit-page:visited {
+        color: gray;
+    }
+
+    .edit-page:hover {
+        text-decoration: underline;
+    }
+
+    .view-page {
+        color: gray;
+        text-decoration: none;
+    }
+
+    .view-page:visited {
+        color: gray;
+    }
+
+    .view-page:hover {
+        text-decoration: underline;
+    }
+
+    label {
+      display: block;
+      font-size: 20px;
+    }
+
+    input[type=text] {
+      width: 400px;
+      font-size: 20px;
+      padding: 2px;
+    }
+
+    input[type=password] {
+      width: 400px;
+      font-size: 20px;
+      padding: 2px;
+    }
+
+    textarea {
+      width: 600px;
+      height: 400px;
+      position: relative;
+      font-size: 17px;
+      font-family: monospace;
+    }
+
+    input[type=submit] {
+      font-size: 24px;
+    }
+
+    hr {
+      margin: 20px auto;
+      border: 1px solid;
+    }
+
+    pre {
+      white-space: -moz-pre-wrap; /* Mozilla, supported since 1999 */
+      white-space: -pre-wrap; /* Opera */
+      white-space: -o-pre-wrap; /* Opera */
+      white-space: pre-wrap; /* CSS3 - Text module (Candidate Recommendation) http://www.w3.org/TR/css3-text/#white-space */
+      word-wrap: break-word; /* IE 5.5+ */
+    }
+
+    .title {
+      font-family: sans-serif;
+      font-weight: bold;
+      font-size: 16px;
+    }
+
+    .content {
+      margin: 0;
+      font-size: 17px;
+    }
+  </style>
+
+  <head>
+    <div class="buttons" align="float: right">
+      <a class="home-link" href="/"><b>Home</b></a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      {% if logged_in %}
+        <a class="edit-link" href="{{ ''.join(['/_edit', page_query]) }}">edit</a>
+        &nbsp;|&nbsp;
+      {% endif %}
+        <a class="history-link" href="{{ ''.join(['/_history', page_query]) }}">history</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+      {% if logged_in %}
+        {{logged_in.name}} (<a class="login-link" href="/logout">logout</a>)
+      {% else %}
+        <a class="login-link" href="/login">login</a>
+        |&nbsp;
+        <a class="signup-link" href="/signup">signup</a>
+      {% endif %}
+    </div>
+  </head>
+  <body>
+    {% block content %}
+    <!--This will be dynamic content that is written by the
+        inheriting html pages-->
+    {% endblock %}
+  </body>
+</html>

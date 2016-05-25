@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {% for post in posts %}
+      <div class="post">
+        <div class="subject" style="float: left">{{post.title}}</div>
+        <!--The styling allows both elements to share a line-->
+        <div class="created" style="float: right">{{post.created}}</div>
+        <br>
+        <br>
+        <pre class="content" width="800px">{{post.body}}</pre>
+      </div>
+      <hr>
+  {% endfor %}
+{% endblock %}
