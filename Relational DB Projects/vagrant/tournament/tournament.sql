@@ -9,7 +9,7 @@
 CREATE TABLE Players(  id SERIAL UNIQUE,
                       name TEXT,
                       wins integer DEFAULT 0,
-                      losses integer DEFAULT 0);
+                      matches integer DEFAULT 0);
 
 CREATE TABLE Matches(   id SERIAL UNIQUE,
                       winner integer NOT NULL,

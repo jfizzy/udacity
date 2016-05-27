@@ -17,6 +17,8 @@ def deleteMatches():
     c = DB.cursor()
     query = "DELETE FROM Matches;"
     c.execute(query)
+    query = "UPDATE Players SET matches='0',wins='0'"
+    c.execute(query)
     DB.commit()
     DB.close()
 
@@ -35,12 +37,15 @@ def countPlayers():
     c = DB.cursor()
     query = "SELECT count(*) FROM Players;"
     c.execute(query)
-    result = str(row[0] for row in c.fetchall()) #need to figure out how to get this to return the value properly
-    print result
+    rows = c.fetchall() #need to figure out how to get this to return the value properly
+    result = ''
+    for row in rows:
+        result = row[0]
     DB.close()
     if not result:
-        return 0;
-    return result
+        return 0
+    else:
+        return result
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
@@ -73,9 +78,11 @@ def playerStandings():
     """
     DB = connect()
     c = DB.cursor()
-    query = ""
+    query = "SELECT * FROM Players ORDER BY wins DESC"
     c.execute(query)
+    rows = c.fetchall()
     DB.close()
+    return rows
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -86,8 +93,37 @@ def reportMatch(winner, loser):
     """
     DB = connect()
     c = DB.cursor()
-    query = ""
-    c.execute(query)
+    # insert match
+    query = "INSERT INTO Matches (winner,loser) VALUES ((%s),(%s));"
+    c.execute(query, (winner,loser))
+    # get winner wins
+    query = "SELECT wins,matches FROM Players WHERE id=(%s);"
+    c.execute(query, (winner,))
+    wws = c.fetchall()
+    ww = ''
+    wm = ''
+    for row in wws:
+        ww = row[0]
+        wm = row[1]
+    ww = int(ww) + 1
+    wm = int(wm) + 1
+    # update winner
+    query = "UPDATE Players SET wins=(%s),matches=(%s) WHERE id=(%s);"
+    c.execute(query, (str(ww),str(wm),winner)) # update the winner's wins and matches
+    # get loser matches
+    query = "SELECT matches FROM Players WHERE id=(%s);"
+    c.execute(query, (loser,))
+    lms = c.fetchall()
+    lm = ''
+    for row in lms:
+        lm = row[0]
+    lm = int(lm) + 1
+    # update loser
+    query = "UPDATE Players SET matches=(%s) WHERE id=(%s);"
+    c.execute(query, (str(lm),loser)) # update the loser's matches
+
+    DB.commit() # commits all the update and insert queries to the DB
+
     DB.close()
  
 def swissPairings():
@@ -107,7 +143,15 @@ def swissPairings():
     """
     DB = connect()
     c = DB.cursor()
-    query = ""
+    query = "SELECT p.id,p.name FROM Players as p LEFT JOIN Matches as m ON p.id = m.winner ORDER BY wins DESC;"
     c.execute(query)
+    players = c.fetchall()
+    if len(players) % 2 == 1:
+        bye = players.pop()
+    # need to update the popee
+    returnList = []
+    for p1,p2 in zip(players[0::2], players[1::2]): # this is a way of making a list of pairs
+        returnList.append((p1[0], p1[1], p2[0], p2[1]))
+    return returnList
     DB.close()
 
