@@ -13,15 +13,34 @@ def connect():
 
 def deleteMatches():
     """Remove all the match records from the database."""
-
+    DB = connect()
+    c = DB.cursor()
+    query = "DELETE FROM Matches;"
+    c.execute(query)
+    DB.commit()
+    DB.close()
 
 def deletePlayers():
     """Remove all the player records from the database."""
-
+    DB = connect()
+    c = DB.cursor()
+    query = "DELETE FROM Players;"
+    c.execute(query)
+    DB.commit()
+    DB.close()
 
 def countPlayers():
     """Returns the number of players currently registered."""
-
+    DB = connect()
+    c = DB.cursor()
+    query = "SELECT count(*) FROM Players;"
+    c.execute(query)
+    result = str(row[0] for row in c.fetchall()) #need to figure out how to get this to return the value properly
+    print result
+    DB.close()
+    if not result:
+        return 0;
+    return result
 
 def registerPlayer(name):
     """Adds a player to the tournament database.
@@ -32,7 +51,12 @@ def registerPlayer(name):
     Args:
       name: the player's full name (need not be unique).
     """
-
+    DB = connect()
+    c = DB.cursor()
+    query = "INSERT INTO Players (name) VALUES (%s);"
+    c.execute(query, (name,))
+    DB.commit()
+    DB.close()
 
 def playerStandings():
     """Returns a list of the players and their win records, sorted by wins.
@@ -47,7 +71,11 @@ def playerStandings():
         wins: the number of matches the player has won
         matches: the number of matches the player has played
     """
-
+    DB = connect()
+    c = DB.cursor()
+    query = ""
+    c.execute(query)
+    DB.close()
 
 def reportMatch(winner, loser):
     """Records the outcome of a single match between two players.
@@ -56,7 +84,11 @@ def reportMatch(winner, loser):
       winner:  the id number of the player who won
       loser:  the id number of the player who lost
     """
- 
+    DB = connect()
+    c = DB.cursor()
+    query = ""
+    c.execute(query)
+    DB.close()
  
 def swissPairings():
     """Returns a list of pairs of players for the next round of a match.
@@ -73,5 +105,9 @@ def swissPairings():
         id2: the second player's unique id
         name2: the second player's name
     """
-
+    DB = connect()
+    c = DB.cursor()
+    query = ""
+    c.execute(query)
+    DB.close()
 
