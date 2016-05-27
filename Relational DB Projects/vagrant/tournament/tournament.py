@@ -146,9 +146,22 @@ def swissPairings():
     query = "SELECT p.id,p.name FROM Players as p LEFT JOIN Matches as m ON p.id = m.winner ORDER BY wins DESC;"
     c.execute(query)
     players = c.fetchall()
+    print players
     if len(players) % 2 == 1:
-        bye = players.pop()
-    # need to update the popee
+        bye = players.pop(0)[0]
+        print players
+        # update thepopped person
+        query = "SELECT wins,matches FROM Players WHERE id=(%s);"
+        c.execute(query, (bye,))
+        bs = c.fetchall()
+        bw = ''
+        bm = ''
+        for b in bs:
+            bw = int(b[0]) + 1
+            bm = int(b[1]) + 1
+        query = "UPDATE Players SET wins=(%s),matches=(%s) WHERE id=(%s);"
+        c.execute(query, (str(bw),str(bm),bye))
+        DB.commit()
     returnList = []
     for p1,p2 in zip(players[0::2], players[1::2]): # this is a way of making a list of pairs
         returnList.append((p1[0], p1[1], p2[0], p2[1]))
